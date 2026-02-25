@@ -80,6 +80,15 @@ new class extends Component {
         </div>
     @endif
 
+    <div class="space-y-5">
+        <form method="POST" action="{{ route('tickets.ai.triage', ['ticket' => $this->ticket->id]) }}">
+            @csrf
+            <flux:button variant="primary" type="submit">
+                    {{ __('Triage') }}
+                </flux:button>
+        </form>
+    </div>
+
     <div class="space-y-4">
         <flux:heading size="sm">{{ __('Conversation') }}</flux:heading>
 
