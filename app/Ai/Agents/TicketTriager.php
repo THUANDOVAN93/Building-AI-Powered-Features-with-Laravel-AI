@@ -15,7 +15,7 @@ use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Promptable;
 use Stringable;
 
-#[Provider(Lab::OpenAI)]
+#[Provider(Lab::Anthropic)]
 #[UseCheapestModel]
 #[MaxTokens(1200)]
 class TicketTriager implements Agent, HasStructuredOutput
@@ -24,7 +24,7 @@ class TicketTriager implements Agent, HasStructuredOutput
 
     /**
      * Get the instructions that the agent should follow.
-     */
+     */#
     public function instructions(): Stringable|string
     {
         return <<<'PROMPT'
@@ -35,6 +35,7 @@ RULES
     - if you cannot determine a value, use
         - summary: "" (empty string)
         - tags: []
+
 PROMPT;
     }
 
@@ -50,7 +51,7 @@ PROMPT;
             'sentiment' => $schema->string()->required(),
             'tags' => $schema->array()->items($schema->string())
                 ->min(0)->max(6)->required(),
-            'summary' => $schema->string()->required()
+            'summary' => $schema->string()->required(),
         ];
     }
 }

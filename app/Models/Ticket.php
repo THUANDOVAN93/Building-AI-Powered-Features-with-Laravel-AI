@@ -18,6 +18,9 @@ class Ticket extends Model
         'department',
         'sentiment',
         'ai_tags',
+        'ai_conversation_id',
+        'role',
+        'body',
     ];
 
     protected $casts = [
