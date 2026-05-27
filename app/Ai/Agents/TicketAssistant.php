@@ -2,7 +2,11 @@
 
 namespace App\Ai\Agents;
 
+use App\Ai\Tools\TicketFactsTool;
+use App\Ai\Tools\TicketMessagesTool;
 use App\Models\Ticket;
+use App\Models\User;
+use Laravel\Ai\Attributes\MaxSteps;
 use Laravel\Ai\Attributes\MaxTokens;
 use Laravel\Ai\Attributes\Provider;
 use Laravel\Ai\Attributes\UseCheapestModel;
@@ -17,12 +21,16 @@ use Stringable;
 
 #[Provider(Lab::Anthropic)]
 #[UseCheapestModel]
-#[MaxTokens(1500)]
-class TicketAssistant implements Agent, Conversational
+#[MaxTokens(5000)]
+#[MaxSteps(3)]
+class TicketAssistant implements Agent, Conversational, HasTools
 {
     use Promptable, RemembersConversations;
 
-    public function __construct(public readonly int $ticketId)
+    public function __construct(
+        public readonly int $ticketId,
+        public readonly ?int $userId = null,
+    )
     {
     }
 
@@ -83,5 +91,14 @@ Recent messages:
 {$messages}
 CONTEXT;
 
+    }
+
+    public function tools(): iterable
+    {
+        $user = $this->userId ? User::find($this->userId) : null;
+         return [
+             new TicketFactsTool($this->ticketId, $user),
+             new TicketMessagesTool($this->ticketId, $user),
+         ];
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AiKnowledgeSearchController;
 use App\Http\Controllers\TicketChatController;
 use App\Http\Controllers\TicketDraftReplyStreamController;
 use App\Http\Controllers\TicketTriageController;
@@ -25,6 +26,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('tickets/{ticket}/ai/draft-reply/stream', TicketDraftReplyStreamController::class)
         ->name('tickets.ai.draft-reply.stream');
+
+    Route::get('ai/knowledge-search', AiKnowledgeSearchController::class)
+        ->name('ai.knowledge-search');
 });
 
 require __DIR__.'/settings.php';

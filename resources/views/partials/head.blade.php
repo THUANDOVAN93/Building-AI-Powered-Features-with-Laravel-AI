@@ -77,10 +77,8 @@
                let buffer = '';
 
                while (true) {
-                   const { done, value } = await reader.read();
-                   if (done) {
-                       break;
-                   }
+                   const { value, done } = await reader.read();
+                   if (done) break;
 
                    buffer += decoder.decode(value, { stream: true });
 
